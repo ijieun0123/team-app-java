@@ -1,9 +1,15 @@
-package com.example.team_app_java.config;
+package com.example.team_app_java.global.config;
 
+import com.example.team_app_java.global.interceptor.AuthInterceptor;
+import com.example.team_app_java.global.resolver.AuthArgumentResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -11,12 +17,34 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${cors.allowed-origins}")
     private String allowedOrigins;
 
+    private final AuthInterceptor authInterceptor;
+    private final AuthArgumentResolver authArgumentResolver;  // 추가
+
+    public WebConfig(AuthInterceptor authInterceptor,
+                     AuthArgumentResolver authArgumentResolver) {
+        this.authInterceptor = authInterceptor;
+        this.authArgumentResolver = authArgumentResolver;
+    }
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**") // 또는 "/**"로 전체 허용 가능
-                .allowedOrigins("http://localhost:5173", "https://ijieun0123.github.io") // 프론트 주소
+        registry.addMapping("/api/**")
+                .allowedOrigins("http://localhost:5173", "https://ijieun0123.github.io")
                 .allowedMethods("GET", "POST", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .allowCredentials(true); // 쿠키/인증 필요 시 true
+                .allowCredentials(true);
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        System.out.println("addInterceptors 실행됨");
+        registry.addInterceptor(authInterceptor)
+                .addPathPatterns("/api/**")
+                .excludePathPatterns("/api/auth/**");
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(authArgumentResolver);
     }
 }
