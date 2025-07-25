@@ -1,4 +1,4 @@
-package com.example.team_app_java.dto;
+package com.example.team_app_java.domain.blog.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

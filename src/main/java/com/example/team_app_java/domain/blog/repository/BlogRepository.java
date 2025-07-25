@@ -1,6 +1,6 @@
-package com.example.team_app_java.repository;
+package com.example.team_app_java.domain.blog.repository;
 
-import com.example.team_app_java.entity.Blog;
+import com.example.team_app_java.domain.blog.entity.Blog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;

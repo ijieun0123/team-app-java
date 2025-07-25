@@ -1,9 +1,8 @@
-package com.example.team_app_java.controller;
+package com.example.team_app_java.domain.blog.controller;
 
-import com.example.team_app_java.dto.CreateBlogRequestDto;
-import com.example.team_app_java.dto.BlogResponseDto;
-import com.example.team_app_java.dto.UpdateBlogRequestDto;
-import com.example.team_app_java.service.BlogService;
+import com.example.team_app_java.domain.blog.dto.response.BlogResponseDto;
+import com.example.team_app_java.domain.blog.dto.request.UpdateBlogRequestDto;
+import com.example.team_app_java.domain.blog.service.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,12 +20,12 @@ public class BlogController {
     BlogService blogService;
 
     // 블로그 글 생성
-    @PostMapping
-    public ResponseEntity<BlogResponseDto> save(@RequestBody CreateBlogRequestDto createBlogRequestDto) {
-        BlogResponseDto createBlogResponseDto = blogService.save(createBlogRequestDto.getTitle(), createBlogRequestDto.getImage(), createBlogRequestDto.getDescription(), createBlogRequestDto.getWriterImage(), createBlogRequestDto.getWriterName() , createBlogRequestDto.getCareer());
-
-        return new ResponseEntity<>(createBlogResponseDto, HttpStatus.CREATED);
-    }
+//    @PostMapping
+//    public ResponseEntity<BlogResponseDto> save(@RequestBody CreateBlogRequestDto createBlogRequestDto) {
+//        BlogResponseDto createBlogResponseDto = blogService.save(createBlogRequestDto.getTitle(), createBlogRequestDto.getImage(), createBlogRequestDto.getDescription());
+//
+//        return new ResponseEntity<>(createBlogResponseDto, HttpStatus.CREATED);
+//    }
 
     // 블로그 글 전체 조회
     @GetMapping

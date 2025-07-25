@@ -1,4 +1,4 @@
-package com.example.team_app_java.entity;
+package com.example.team_app_java.global.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
