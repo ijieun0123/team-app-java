@@ -1,0 +1,12 @@
+package com.example.team_app_java.global.exception;
+
+public class NotFoundException extends HandledException {
+    public NotFoundException() {
+        super(ErrorCode.NOT_FOUND);
+    }
+
+    public NotFoundException(String message) {
+        super(ErrorCode.NOT_FOUND, message);
+    }
+}
+
