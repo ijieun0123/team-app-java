@@ -35,7 +35,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String career;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<Blog> blogs;
 
     protected User() {

@@ -1,8 +1,11 @@
 package com.example.team_app_java.domain.blog.controller;
 
+import com.example.team_app_java.domain.blog.dto.request.BlogCreateRequestDto;
 import com.example.team_app_java.domain.blog.dto.response.BlogResponseDto;
-import com.example.team_app_java.domain.blog.dto.request.UpdateBlogRequestDto;
+import com.example.team_app_java.domain.blog.dto.request.BlogUpdateRequestDto;
 import com.example.team_app_java.domain.blog.service.BlogService;
+import com.example.team_app_java.domain.user.entity.User;
+import com.example.team_app_java.global.annotation.Auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,12 +23,12 @@ public class BlogController {
     BlogService blogService;
 
     // 블로그 글 생성
-//    @PostMapping
-//    public ResponseEntity<BlogResponseDto> save(@RequestBody CreateBlogRequestDto createBlogRequestDto) {
-//        BlogResponseDto createBlogResponseDto = blogService.save(createBlogRequestDto.getTitle(), createBlogRequestDto.getImage(), createBlogRequestDto.getDescription());
-//
-//        return new ResponseEntity<>(createBlogResponseDto, HttpStatus.CREATED);
-//    }
+    @PostMapping
+    public ResponseEntity<BlogResponseDto> save(@Auth User user, @RequestBody BlogCreateRequestDto createBlogRequestDto) {
+        BlogResponseDto createBlogResponseDto = blogService.save(user, createBlogRequestDto);
+
+        return new ResponseEntity<>(createBlogResponseDto, HttpStatus.CREATED);
+    }
 
     // 블로그 글 전체 조회
     @GetMapping
@@ -47,9 +50,9 @@ public class BlogController {
     @PatchMapping("/{id}")
     public ResponseEntity<BlogResponseDto> update(
             @PathVariable Long id,
-            @RequestBody UpdateBlogRequestDto updateBlogRequestDto
+            @RequestBody BlogUpdateRequestDto blogUpdateRequestDto
     ){
-        BlogResponseDto blogResponseDto = blogService.update(id, updateBlogRequestDto.getTitle(), updateBlogRequestDto.getImage(), updateBlogRequestDto.getDescription(), updateBlogRequestDto.getWriterImage(), updateBlogRequestDto.getWriterName(), updateBlogRequestDto.getCareer());
+        BlogResponseDto blogResponseDto = blogService.update(id, blogUpdateRequestDto);
 
         return new ResponseEntity<>(blogResponseDto, HttpStatus.OK);
     }

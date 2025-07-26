@@ -3,13 +3,15 @@ package com.example.team_app_java.domain.blog.entity;
 import com.example.team_app_java.domain.user.entity.User;
 import com.example.team_app_java.global.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;  
 
 @Entity
 @Getter
 @Setter
-@Table(name = "blog")
+@Builder
+@Table(name = "blogs")
 public class Blog extends BaseEntity {
 
     @Id
@@ -31,9 +33,10 @@ public class Blog extends BaseEntity {
     public Blog() {
     }
 
-    public Blog(String title, String image, String description, User user) {
-        this.title = title;
+    public Blog(Long id, String image, String title, String description, User user) {
+        this.id = id;
         this.image = image;
+        this.title = title;
         this.description = description;
         this.user = user;
     }
