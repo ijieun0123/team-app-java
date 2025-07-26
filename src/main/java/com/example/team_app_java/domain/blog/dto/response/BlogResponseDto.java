@@ -15,19 +15,23 @@ public class BlogResponseDto {
     private final String title;
     private final String description;
     private final String image;
-    private final String userName;
+    private final String writerName;
+    private final String writerImage;
+    private final String career;
     private final LocalDateTime createdAt;
 
-    public BlogResponseDto(Long id, String title, String description, String image, String userName, LocalDateTime createdAt) {
+    public BlogResponseDto(Long id, String title, String description, String image, String writerName, String writerImage, String career, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.image = image;
-        this.userName = userName;
+        this.writerName = writerName;
+        this.writerImage = writerImage;
+        this.career = career;
         this.createdAt = createdAt;
     }
 
     public static BlogResponseDto toDto(Blog blog){
-        return new BlogResponseDto(blog.getId(), blog.getTitle(), blog.getDescription(), blog.getImage(), blog.getUser().getName(), blog.getCreatedAt());
+        return new BlogResponseDto(blog.getId(), blog.getTitle(), blog.getDescription(), blog.getImage(), blog.getUser().getName(), blog.getUser().getProfileImage(), blog.getUser().getCareer(), blog.getCreatedAt());
     }
 }

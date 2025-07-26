@@ -30,24 +30,23 @@ public class BlogService {
 
         Blog savedBlog = blogRepository.save(blog);
 
-        return new BlogResponseDto(savedBlog.getId(), savedBlog.getTitle(), savedBlog.getDescription(), savedBlog.getImage(), savedBlog.getUser().getName(), savedBlog.getCreatedAt());
+        return BlogResponseDto.toDto(savedBlog);
     }
 
     // 블로그 글 전체 조회
     public List<BlogResponseDto> findAll() {
-        List<BlogResponseDto> blogs = blogRepository.findAll()
+
+        return blogRepository.findAll()
                 .stream()
                 .map(BlogResponseDto::toDto)
                 .collect(Collectors.toList());
-
-        return blogs;
     }
 
     // 블로그 글 선택 조회
     public BlogResponseDto findById(Long id) {
         Blog findBlog = blogRepository.findByIdOrElseThrow(id);
 
-        return new BlogResponseDto(findBlog.getId(), findBlog.getTitle(), findBlog.getDescription(), findBlog.getImage(), findBlog.getUser().getName(), findBlog.getCreatedAt());
+        return BlogResponseDto.toDto(findBlog);
     }
 
     // 블로그 글 수정
@@ -59,7 +58,7 @@ public class BlogService {
         findBlog.setImage(blogUpdateRequestDto.getImage());
         findBlog.setDescription(blogUpdateRequestDto.getDescription());
 
-        return new BlogResponseDto(findBlog.getId(), findBlog.getTitle(), findBlog.getDescription(), findBlog.getImage(), findBlog.getUser().getName(), findBlog.getCreatedAt());
+        return BlogResponseDto.toDto(findBlog);
     }
 
     // 블로그 글 삭제
