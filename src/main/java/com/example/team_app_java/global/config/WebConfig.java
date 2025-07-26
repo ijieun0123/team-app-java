@@ -1,8 +1,11 @@
 package com.example.team_app_java.global.config;
 
+import com.example.team_app_java.domain.blog.filter.BlogFilter;
 import com.example.team_app_java.global.interceptor.AuthInterceptor;
 import com.example.team_app_java.global.resolver.AuthArgumentResolver;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -37,7 +40,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        System.out.println("addInterceptors 실행됨");
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/api/**")
                 .excludePathPatterns("/api/auth/**");
@@ -46,5 +48,13 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(authArgumentResolver);
+    }
+
+    @Bean
+    public FilterRegistrationBean<BlogFilter> blogFilter() {
+        FilterRegistrationBean<BlogFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new BlogFilter());
+        registrationBean.addUrlPatterns("/api/blogs/*"); // 블로그 관련 API만 필터 적용
+        return registrationBean;
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.io.IOException;
 
-@Slf4j
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
@@ -24,8 +23,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
-        log.info("AuthInterceptor.preHandle 호출됨 - 요청 URI: {}", request.getRequestURI());
-
         // @Auth가 없는 경우 통과
         if (!(handler instanceof HandlerMethod)) return true;
 
