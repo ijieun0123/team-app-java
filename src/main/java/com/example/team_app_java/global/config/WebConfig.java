@@ -3,6 +3,7 @@ package com.example.team_app_java.global.config;
 import com.example.team_app_java.domain.blog.filter.BlogFilter;
 import com.example.team_app_java.global.interceptor.AuthInterceptor;
 import com.example.team_app_java.global.resolver.AuthArgumentResolver;
+import com.example.team_app_java.global.util.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -21,12 +22,14 @@ public class WebConfig implements WebMvcConfigurer {
     private String allowedOrigins;
 
     private final AuthInterceptor authInterceptor;
-    private final AuthArgumentResolver authArgumentResolver;  // 추가
+    private final AuthArgumentResolver authArgumentResolver;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public WebConfig(AuthInterceptor authInterceptor,
-                     AuthArgumentResolver authArgumentResolver) {
+                     AuthArgumentResolver authArgumentResolver, JwtTokenProvider jwtTokenProvider) {
         this.authInterceptor = authInterceptor;
         this.authArgumentResolver = authArgumentResolver;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
@@ -53,7 +56,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public FilterRegistrationBean<BlogFilter> blogFilter() {
         FilterRegistrationBean<BlogFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new BlogFilter());
+        registrationBean.setFilter(new BlogFilter(jwtTokenProvider));
         registrationBean.addUrlPatterns("/api/blogs/*"); // 블로그 관련 API만 필터 적용
         return registrationBean;
     }

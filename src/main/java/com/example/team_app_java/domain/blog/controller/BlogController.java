@@ -49,18 +49,22 @@ public class BlogController {
     // 블로그 글 수정
     @PatchMapping("/{id}")
     public ResponseEntity<BlogResponseDto> update(
+            @Auth User user,
             @PathVariable Long id,
             @RequestBody BlogUpdateRequestDto blogUpdateRequestDto
     ){
-        BlogResponseDto blogResponseDto = blogService.update(id, blogUpdateRequestDto);
+        BlogResponseDto blogResponseDto = blogService.update(user, id, blogUpdateRequestDto);
 
         return new ResponseEntity<>(blogResponseDto, HttpStatus.OK);
     }
 
     // 블로그 글 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id){
-        blogService.deleteById(id);
+    public ResponseEntity<Void> deleteById(
+            @Auth User user,
+            @PathVariable Long id
+    ){
+        blogService.deleteById(user, id);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

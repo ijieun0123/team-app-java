@@ -6,6 +6,8 @@ import com.example.team_app_java.domain.blog.dto.response.BlogResponseDto;
 import com.example.team_app_java.domain.blog.entity.Blog;
 import com.example.team_app_java.domain.blog.repository.BlogRepository;
 import com.example.team_app_java.domain.user.entity.User;
+import com.example.team_app_java.global.exception.BlogNotFoundException;
+import com.example.team_app_java.global.exception.UnauthorizedException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,8 +53,13 @@ public class BlogService {
 
     // 블로그 글 수정
     @Transactional
-    public BlogResponseDto update(Long id, BlogUpdateRequestDto blogUpdateRequestDto) {
+    public BlogResponseDto update(User user, Long id, BlogUpdateRequestDto blogUpdateRequestDto) {
         Blog findBlog = blogRepository.findByIdOrElseThrow(id);
+
+        // 작성자가 아닐 경우 체크
+        if (!findBlog.getUser().getId().equals(user.getId())) {
+            throw UnauthorizedException.forBlogUpdate();
+        }
 
         findBlog.setTitle(blogUpdateRequestDto.getTitle());
         findBlog.setImage(blogUpdateRequestDto.getImage());
@@ -62,8 +69,13 @@ public class BlogService {
     }
 
     // 블로그 글 삭제
-    public void deleteById(Long id) {
+    public void deleteById(User user, Long id) {
         Blog findBlog = blogRepository.findByIdOrElseThrow(id);
+
+        // 작성자가 아닐 경우 체크
+        if (!findBlog.getUser().getId().equals(user.getId())) {
+            throw UnauthorizedException.forBlogDelete();
+        }
 
         blogRepository.delete(findBlog);
     }

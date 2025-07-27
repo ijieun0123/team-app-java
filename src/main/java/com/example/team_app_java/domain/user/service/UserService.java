@@ -4,6 +4,7 @@ import com.example.team_app_java.domain.user.dto.request.UserUpdateRequestDto;
 import com.example.team_app_java.domain.user.dto.response.UserResponseDto;
 import com.example.team_app_java.domain.user.entity.User;
 import com.example.team_app_java.domain.user.repository.UserRepository;
+import com.example.team_app_java.global.exception.UserNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,7 @@ public class UserService {
 
     public User findUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
     }
 }
 

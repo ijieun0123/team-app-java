@@ -20,6 +20,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
+    @ExceptionHandler(BlogNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleBlogNotFound(BlogNotFoundException ex) {
+        ErrorResponse error = new ErrorResponse("BLOG_NOT_FOUND", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
     @ExceptionHandler(InvalidPasswordException.class)
     public ResponseEntity<ErrorResponse> handleInvalidPassword(InvalidPasswordException ex) {
         ErrorResponse error = new ErrorResponse("INVALID_PASSWORD", ex.getMessage());
