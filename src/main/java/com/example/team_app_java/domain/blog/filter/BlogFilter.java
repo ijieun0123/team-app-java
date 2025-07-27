@@ -62,7 +62,7 @@ public class BlogFilter implements Filter {
             httpResponse.setContentType("application/json;charset=UTF-8");
 
             ObjectMapper mapper = new ObjectMapper();
-            var errorBody = new ErrorResponse("UNAUTHENTICATED", e.getMessage());
+            var errorBody = new ErrorResponse("UNAUTHENTICATED", e.getMessage(), null);
             httpResponse.getWriter().write(mapper.writeValueAsString(errorBody));
         }
     }

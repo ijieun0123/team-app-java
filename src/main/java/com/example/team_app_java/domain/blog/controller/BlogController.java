@@ -6,6 +6,7 @@ import com.example.team_app_java.domain.blog.dto.request.BlogUpdateRequestDto;
 import com.example.team_app_java.domain.blog.service.BlogService;
 import com.example.team_app_java.domain.user.entity.User;
 import com.example.team_app_java.global.annotation.Auth;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,10 @@ public class BlogController {
 
     // 블로그 글 생성
     @PostMapping
-    public ResponseEntity<BlogResponseDto> save(@Auth User user, @RequestBody BlogCreateRequestDto createBlogRequestDto) {
+    public ResponseEntity<BlogResponseDto> save(
+            @Auth User user,
+            @RequestBody @Valid BlogCreateRequestDto createBlogRequestDto
+    ) {
         BlogResponseDto createBlogResponseDto = blogService.save(user, createBlogRequestDto);
 
         return new ResponseEntity<>(createBlogResponseDto, HttpStatus.CREATED);
@@ -51,7 +55,7 @@ public class BlogController {
     public ResponseEntity<BlogResponseDto> update(
             @Auth User user,
             @PathVariable Long id,
-            @RequestBody BlogUpdateRequestDto blogUpdateRequestDto
+            @RequestBody @Valid BlogUpdateRequestDto blogUpdateRequestDto
     ){
         BlogResponseDto blogResponseDto = blogService.update(user, id, blogUpdateRequestDto);
 

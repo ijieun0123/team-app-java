@@ -4,6 +4,7 @@ import com.example.team_app_java.domain.auth.dto.request.LoginRequestDto;
 import com.example.team_app_java.domain.auth.dto.request.SignUpRequestDto;
 import com.example.team_app_java.domain.auth.dto.response.LoginResponseDto;
 import com.example.team_app_java.domain.auth.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +21,13 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<Void> signUp(@RequestBody SignUpRequestDto signUpRequestDto) {
+    public ResponseEntity<Void> signUp(@RequestBody @Valid SignUpRequestDto signUpRequestDto) {
         authService.signUp(signUpRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto request) {
+    public ResponseEntity<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto request) {
         LoginResponseDto loginResponseDto = authService.login(request);
         return new ResponseEntity<>(loginResponseDto, HttpStatus.OK);
     }
