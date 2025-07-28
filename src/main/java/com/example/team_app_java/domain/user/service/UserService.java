@@ -4,6 +4,7 @@ import com.example.team_app_java.domain.user.dto.request.UserUpdateRequestDto;
 import com.example.team_app_java.domain.user.dto.response.UserResponseDto;
 import com.example.team_app_java.domain.user.entity.User;
 import com.example.team_app_java.domain.user.repository.UserRepository;
+import com.example.team_app_java.global.exception.EmailAlreadyExistsException;
 import com.example.team_app_java.global.exception.UserNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,11 @@ public class UserService {
     public void updateUser(Long id, UserUpdateRequestDto userUpdateRequestDto) {
         User user = userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
+
+        // 이메일 중복 체크
+        if (userRepository.existsByEmail(userUpdateRequestDto.getEmail())) {
+            throw new EmailAlreadyExistsException();
+        }
 
         user.setName(userUpdateRequestDto.getName());
         user.setEmail(userUpdateRequestDto.getEmail());
