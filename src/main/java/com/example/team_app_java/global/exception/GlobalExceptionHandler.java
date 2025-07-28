@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
 
         ErrorResponse response = ErrorResponse.of(
                 "VALIDATION_ERROR",
-                "요청값이 올바르지 않습니다.",
+                "입력한 정보가 올바르지 않습니다.",
                 fieldErrors
         );
 
