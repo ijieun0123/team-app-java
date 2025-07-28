@@ -18,9 +18,10 @@ public class BlogResponseDto {
     private final String writerName;
     private final String writerImage;
     private final String career;
+    private final String email;
     private final LocalDateTime createdAt;
 
-    public BlogResponseDto(Long id, String title, String description, String image, String writerName, String writerImage, String career, LocalDateTime createdAt) {
+    public BlogResponseDto(Long id, String title, String description, String image, String writerName, String writerImage, String career, String email, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -28,10 +29,11 @@ public class BlogResponseDto {
         this.writerName = writerName;
         this.writerImage = writerImage;
         this.career = career;
+        this.email = email;
         this.createdAt = createdAt;
     }
 
     public static BlogResponseDto toDto(Blog blog){
-        return new BlogResponseDto(blog.getId(), blog.getTitle(), blog.getDescription(), blog.getImage(), blog.getUser().getName(), blog.getUser().getProfileImage(), blog.getUser().getCareer(), blog.getCreatedAt());
+        return new BlogResponseDto(blog.getId(), blog.getTitle(), blog.getDescription(), blog.getImage(), blog.getUser().getName(), blog.getUser().getProfileImage(), blog.getUser().getCareer(), blog.getUser().getEmail(), blog.getCreatedAt());
     }
 }
