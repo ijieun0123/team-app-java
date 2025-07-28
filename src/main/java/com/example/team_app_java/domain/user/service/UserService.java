@@ -17,7 +17,6 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserResponseDto getUserInfo(Long id) {
-        // 사용자 정보 없음 체크
         User user = userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
 
@@ -27,7 +26,7 @@ public class UserService {
     @Transactional
     public void updateUser(Long id, UserUpdateRequestDto userUpdateRequestDto) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
 
         user.setName(userUpdateRequestDto.getName());
         user.setEmail(userUpdateRequestDto.getEmail());
@@ -41,7 +40,8 @@ public class UserService {
 
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
+
         userRepository.delete(user);
     }
 
