@@ -17,8 +17,9 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserResponseDto getUserInfo(Long id) {
+        // 사용자 정보 없음 체크
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
 
         return new UserResponseDto(user);
     }
