@@ -2,6 +2,7 @@ package com.example.team_app_java.global.resolver;
 
 import com.example.team_app_java.domain.user.entity.User;
 import com.example.team_app_java.global.annotation.Auth;
+import com.example.team_app_java.global.exception.InvalidTokenException;
 import com.example.team_app_java.global.util.JwtTokenProvider;
 import com.example.team_app_java.domain.user.service.UserService;
 
@@ -37,7 +38,8 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
         String token = jwtTokenProvider.resolveToken(request);
 
         if (token == null || !jwtTokenProvider.validateToken(token)) {
-            throw new IllegalStateException("유효하지 않은 토큰입니다.");
+//            throw new IllegalStateException("유효하지 않은 토큰입니다.");
+            throw new InvalidTokenException();
         }
 
         Long userId = jwtTokenProvider.getUserId(token);

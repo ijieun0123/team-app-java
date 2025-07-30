@@ -41,7 +41,7 @@ public class AuthService {
     public LoginResponseDto login(LoginRequestDto loginRequestDto) {
         // 존재하지 않는 이메일 체크
         User user = userRepository.findByEmail(loginRequestDto.getEmail())
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
 
         // 비밀번호 불일치 체크
         if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {

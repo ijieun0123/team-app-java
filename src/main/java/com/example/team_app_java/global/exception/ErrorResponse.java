@@ -28,11 +28,11 @@ public class ErrorResponse {
     @Getter
     public static class FieldError {
         private final String field;
-        private final String reason;
+        private final String reasonCode;
 
-        public FieldError(String field, String reason) {
+        public FieldError(String field, String reasonCode) {
             this.field = field;
-            this.reason = reason;
+            this.reasonCode = reasonCode;
         }
 
         public static FieldError of(org.springframework.validation.FieldError error) {

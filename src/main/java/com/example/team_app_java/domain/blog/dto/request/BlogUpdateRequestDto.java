@@ -11,13 +11,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BlogUpdateRequestDto {
 
-    @NotBlank(message = "제목은 필수입니다.")
-    @Size(max = 100, message = "제목은 100자 이하로 입력해주세요.")
+    @NotBlank(message = "REQUIRED_TITLE")
+    @Size(max = 100, message = "INVALID_TITLE_LENGTH")
     private String title;
 
     private String image;
 
-    @NotBlank(message = "본문은 필수입니다.")
+    @NotBlank(message = "REQUIRED_CONTENT")
     private String description;
 
     public BlogUpdateRequestDto(String title, String image, String description) {

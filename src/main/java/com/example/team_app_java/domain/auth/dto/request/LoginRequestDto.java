@@ -11,11 +11,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LoginRequestDto {
 
-    @NotBlank(message = "이메일은 필수입니다.")
-    @Email(message = "이메일 형식이 아닙니다.")
+    @NotBlank(message = "REQUIRED_EMAIL")
+    @Email(message = "INVALID_EMAIL_FORMAT")
     private String email;
 
-    @NotBlank(message = "비밀번호는 필수입니다.")
+    @NotBlank(message = "REQUIRED_PASSWORD")
     private String password;
 
     public LoginRequestDto(String email, String password) {
