@@ -70,6 +70,6 @@ public class BlogController {
     ){
         blogService.deleteById(user, id);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
