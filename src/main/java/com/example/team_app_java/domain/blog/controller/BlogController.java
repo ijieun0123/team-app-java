@@ -3,6 +3,7 @@ package com.example.team_app_java.domain.blog.controller;
 import com.example.team_app_java.domain.blog.dto.request.BlogCreateRequestDto;
 import com.example.team_app_java.domain.blog.dto.response.BlogResponseDto;
 import com.example.team_app_java.domain.blog.dto.request.BlogUpdateRequestDto;
+import com.example.team_app_java.domain.blog.dto.response.PageResponseDto;
 import com.example.team_app_java.domain.blog.service.BlogService;
 import com.example.team_app_java.domain.user.entity.User;
 import com.example.team_app_java.global.annotation.Auth;
@@ -36,8 +37,11 @@ public class BlogController {
 
     // 블로그 글 전체 조회
     @GetMapping
-    public ResponseEntity<List<BlogResponseDto>> findAll(){
-        List<BlogResponseDto> blogs = blogService.findAll();
+    public ResponseEntity<PageResponseDto<BlogResponseDto>> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ){
+        PageResponseDto<BlogResponseDto> blogs = blogService.findAll(page, size);
 
         return new ResponseEntity<>(blogs, HttpStatus.OK);
     }
