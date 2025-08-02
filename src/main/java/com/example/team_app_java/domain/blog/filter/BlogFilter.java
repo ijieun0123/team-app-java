@@ -28,36 +28,49 @@ public class BlogFilter implements Filter {
         String path = httpRequest.getRequestURI();
         String method = httpRequest.getMethod();
 
+        // CORS 헤더 무조건 추가 (모든 응답에 대해)
+        String origin = httpRequest.getHeader("Origin");
+        if (origin != null) {
+            httpResponse.setHeader("Access-Control-Allow-Origin", origin);
+            httpResponse.setHeader("Vary", "Origin"); // CDN 캐싱 방지
+            httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
+        }
+
+        httpResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
+        httpResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+        // preflight 요청은 바로 통과
+        if (method.equalsIgnoreCase("OPTIONS")) {
+            httpResponse.setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
+
         try {
-            // 1. 인가 필요 없는 블로그 전체/선택 조회 (GET만 허용)
+            // 인가 필요 없는 GET 요청은 인증 없이 통과
             if (method.equals("GET") && path.matches("^/api/blogs(/\\d+)?$")) {
-                chain.doFilter(request, response);
+                chain.doFilter(request, response); // 헤더는 위에서 이미 넣었음
                 return;
             }
 
-            // 2. Authorization 헤더 확인
+            // JWT 인증 처리
             String bearerToken = httpRequest.getHeader("Authorization");
             if (bearerToken == null || bearerToken.isBlank()) {
                 throw new UnauthenticatedException();
             }
 
-            // "Bearer " 접두사 제거하고 공백 제거
             if (!bearerToken.startsWith("Bearer ")) {
                 throw new InvalidTokenException();
             }
 
             String token = bearerToken.substring(7).trim();
 
-            // 3. 토큰 유효성 검증
             if (!jwtTokenProvider.validateToken(token)) {
                 throw new InvalidTokenException();
             }
 
-            // 통과
             chain.doFilter(request, response);
 
         } catch (UnauthenticatedException | InvalidTokenException e) {
-            // 4. 에러 응답 직접 작성
             httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             httpResponse.setContentType("application/json;charset=UTF-8");
 
