@@ -13,15 +13,20 @@ import java.util.Optional;
 public class TeamAppJavaApplication {
 
 	public static void main(String[] args) {
-		try {
-			Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+		Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 
-			System.setProperty("DB_USERNAME", Optional.ofNullable(dotenv.get("DB_USERNAME")).orElse(System.getenv("DB_USERNAME")));
-			System.setProperty("DB_PASSWORD", Optional.ofNullable(dotenv.get("DB_PASSWORD")).orElse(System.getenv("DB_PASSWORD")));
-		} catch (Exception e) {
-			// 로그 찍고 무시 (필요하면)
-			System.out.println("Dotenv 로딩 실패, 환경변수에서 읽기 시도");
+		// .env가 없어도 system environment 변수 읽기
+		String username = dotenv.get("DB_USERNAME");
+		if (username == null) {
+			username = System.getenv("DB_USERNAME");
 		}
+		String password = dotenv.get("DB_PASSWORD");
+		if (password == null) {
+			password = System.getenv("DB_PASSWORD");
+		}
+
+		System.setProperty("DB_USERNAME", username);
+		System.setProperty("DB_PASSWORD", password);
 
 		SpringApplication.run(TeamAppJavaApplication.class, args);
 	}
