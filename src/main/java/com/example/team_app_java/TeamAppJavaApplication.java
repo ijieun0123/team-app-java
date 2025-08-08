@@ -13,39 +13,33 @@ import java.util.Optional;
 public class TeamAppJavaApplication {
 
 	public static void main(String[] args) {
-		Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 
-		// DB_USERNAME 읽기
-		String username = dotenv.get("DB_USERNAME");
-		if (username == null || username.isBlank()) {
+		String username;
+		String password;
+
+		// 로컬 환경에서는 .env 읽기
+		if (isLocal()) {
+			Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+			username = dotenv.get("DB_USERNAME");
+			password = dotenv.get("DB_PASSWORD");
+		} else {
+			// 배포 환경에서는 환경변수 바로 읽기
 			username = System.getenv("DB_USERNAME");
-		}
-
-		// DB_PASSWORD 읽기
-		String password = dotenv.get("DB_PASSWORD");
-		if (password == null || password.isBlank()) {
 			password = System.getenv("DB_PASSWORD");
 		}
 
-		// 로그로 확인 (배포 환경에서 null 여부 확인용)
 		System.out.println("[ENV CHECK] DB_USERNAME: " + username);
 		System.out.println("[ENV CHECK] DB_PASSWORD: " + (password != null ? "********" : null));
 
-		// null이 아닐 때만 setProperty 호출
-		if (username != null) {
-			System.setProperty("DB_USERNAME", username);
-		} else {
-			System.err.println("ERROR: DB_USERNAME is not set in environment variables!");
-		}
-
-		if (password != null) {
-			System.setProperty("DB_PASSWORD", password);
-		} else {
-			System.err.println("ERROR: DB_PASSWORD is not set in environment variables!");
-		}
+		if (username != null) System.setProperty("DB_USERNAME", username);
+		if (password != null) System.setProperty("DB_PASSWORD", password);
 
 		SpringApplication.run(TeamAppJavaApplication.class, args);
 	}
 
+	private static boolean isLocal() {
+		String env = System.getenv("RAILWAY_ENVIRONMENT");
+		return env == null || env.equalsIgnoreCase("local");
+	}
 
 }
